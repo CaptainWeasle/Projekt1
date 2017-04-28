@@ -1,0 +1,47 @@
+public class PercentExercise extends Exercise{
+
+	public PercentExercise(int level){
+		super(level);
+	}
+	
+	// generates an exercise
+	@Override
+	protected void generateExercise(){
+		if(level == 1){
+			component1 = getRandomInt(10)+1;
+			component2 = getRandomInt(100)+1;
+			answer = (component1 * component2) / 100;
+			if(answer % 1 != 0){
+				generateExercise();
+			}
+		}else if(level == 3){
+			component1 = getRandomInt(99) + 1;
+			component2 = (getRandomInt(99) + 1) * 10;
+			answer = (component1 * component2) / 100;
+			if(answer % 10 != 0){
+				generateExercise();
+			}
+		}else if(level == 2){
+			component1 = getRandomInt(19)+1;
+			component2 = getRandomInt(300)+1;
+			answer = (component1 * component2) / 100;
+			if(answer % 10 != 0){
+				generateExercise();
+			}
+		}else if(level == 4){
+			component1 = getRandomInt(99) + 1;
+			component2 = getRandomInt(999) + 1;
+			answer = (component1 * component2) / 100;
+			if(answer % 10 != 0){
+				generateExercise();
+			}
+		}
+		
+	}
+	
+	// returns current params as a String
+	@Override
+	public String getQuestion(){
+		return component1 + "% ist wieviel von " + component2 + ": ";
+	}
+}

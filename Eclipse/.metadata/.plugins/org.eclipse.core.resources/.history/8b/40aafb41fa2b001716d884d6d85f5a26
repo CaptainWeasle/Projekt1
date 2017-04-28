@@ -1,0 +1,183 @@
+package window;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+import main.ExerciseManager;
+import main.Player;
+
+public class MainFrame extends JFrame {
+	
+	JDialog playerDialog, infoDialog;
+	JTextArea playerText;
+	
+	public MainFrame(Player player) {
+		setTitle("Mathe Trainer");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		exercisePanel(player);
+		pack();
+	}
+	
+	private void exercisePanel(Player player){
+		
+		// Initialize Exercise
+		System.out.println("Starting Exercise Manager");
+		ExerciseManager exMan = new ExerciseManager();
+		
+		System.out.println("Run exercisePanel");
+		JPanel panel = new JPanel();
+		
+		// Initialize JDialogs
+		infoDialog();
+		playerDialog();
+		
+		// Initialize Components
+		JComboBox generateBox = new JComboBox(exMan.getExerciseList());
+		panel.add(generateBox);
+		
+		JLabel lvlLable = new JLabel("Lvl.:");
+		panel.add(lvlLable);
+		
+		JComboBox levelBox = new JComboBox(exMan.getLevelList());
+		panel.add(levelBox);
+		
+		JButton generateButton = new JButton("Aufgabe erstellen");
+		panel.add(generateButton);
+		
+		JLabel label = new JLabel("<html><f>" + exMan.getQuestion() + "</f></html>");
+		panel.add(label);
+		
+		JTextField field = new JTextField("", 5);
+		panel.add(field);
+		
+		JButton buttonOk = new JButton("Ok");
+		panel.add(buttonOk);
+		
+		JButton buttonPlayer = new JButton("Statistik");
+		panel.add(buttonPlayer);
+		
+		JButton buttonInfo = new JButton("i");
+		panel.add(buttonInfo);
+		
+		JButton debugButton = new JButton("debug");
+		panel.add(debugButton);
+		debugButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				debugButton.setText("Erg.: " + exMan.getAnswer());
+				pack();
+			}
+		});
+		
+		// ActionListener
+		generateBox.addItemListener(
+			new ItemListener(){
+				public void itemStateChanged(ItemEvent event){
+					if(event.getStateChange() == ItemEvent.SELECTED){
+						exMan.setType(generateBox.getSelectedIndex());
+					}
+				}
+			}
+		);
+		
+		levelBox.addItemListener(
+			new ItemListener(){
+				public void itemStateChanged(ItemEvent event){
+					if(event.getStateChange() == ItemEvent.SELECTED){
+						exMan.setLevel(levelBox.getSelectedIndex());
+					}
+				}
+			}
+		);
+		
+		generateButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				exMan.generateExercise();
+				label.setText("<html><f>" + exMan.getQuestion() + "</f></html>");
+				//debug:
+				debugButton.setText("debug");
+				pack();
+			}
+		});
+		
+		ActionListener sendListener = new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				String txt = field.getText();
+				if(txt.isEmpty())	txt = "";
+				if(("" + exMan.getAnswer()).equalsIgnoreCase(txt)){
+					player.setResult(true, exMan.getType());
+					exMan.generateExercise();
+					label.setText("<html><f>" + exMan.getQuestion() + "</f></html>");
+					//debug:
+					debugButton.setText("debug");
+				}else{
+					player.setResult(false, exMan.getType());
+				}
+				field.setText("");
+				pack();
+			}
+		};
+		
+		buttonOk.addActionListener(sendListener);
+		field.addActionListener(sendListener);
+		
+		buttonPlayer.addActionListener(
+			new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent e){
+					playerText.setText(player.showStats());
+					playerDialog.pack();
+					playerDialog.setVisible(true);
+				}
+			}
+		);
+		
+		buttonInfo.addActionListener(
+			new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent e){
+					infoDialog.setVisible(true);
+				}
+			}
+		);
+		
+		// Add to frame
+		add(panel);
+	}
+
+	private void infoDialog() {
+		infoDialog = new JDialog();
+		infoDialog.setTitle("INFO");
+		infoDialog.setModal(true);
+		JPanel infoPanel = new JPanel();
+		JTextArea infoText = new JTextArea("Informationen:\n+++++++++++++++++++++++++++++++++++++++++++++++++++\n Ergebnisse bitte mit mindestens einer Nachkommarstelle! (z.B 3.0 / 4.1)");
+		infoPanel.add(infoText);
+		infoDialog.add(infoPanel);
+		infoDialog.pack();		
+	}
+
+	private void playerDialog() {
+		playerDialog = new JDialog();
+		playerDialog.setTitle("Statistik");
+		playerDialog.setModal(true);
+		JPanel playerPanel = new JPanel();
+		playerText = new JTextArea();
+		playerPanel.add(playerText);
+		playerDialog.add(playerPanel);
+		playerDialog.pack();		
+	}
+}

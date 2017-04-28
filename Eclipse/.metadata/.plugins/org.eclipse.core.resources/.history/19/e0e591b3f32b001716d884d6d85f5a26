@@ -1,0 +1,16 @@
+package window;
+
+import javax.swing.JFrame;
+
+import main.Player;
+
+public class MainFrame extends JFrame {
+	
+	public MainFrame(Player player) {
+		setTitle("Mathe Trainer");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		exercisePanel(player);
+		pack();
+		setVisible(true);
+	}
+}

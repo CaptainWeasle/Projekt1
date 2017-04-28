@@ -1,0 +1,71 @@
+public class CancelExercise extends Exercise{
+	
+	public CancelExercise(int level){
+		super(level);
+	}
+	
+	@Override
+	protected void generateExercise(){
+		if(level == 1){
+			component1 = getRandomInt(9) + 1;
+			component2 = getRandomInt((int)component1);
+			if(component2 == 0)	component2++;
+			if(getGGT((int)component1, (int)component2) != 0){
+				answer = getGGT((int)component1, (int)component2);
+			}else{
+				answer = getRandomInt(9) + 1;
+				component1 = component1 * answer;
+				component2 = component2 * answer;
+			}
+		}else if(level == 2){
+			component1 = getRandomInt(19) + 1;
+			component2 = getRandomInt((int)component1);
+			if(component2 == 0)	component2++;
+			if(getGGT((int)component1, (int)component2) != 0){
+				answer = getGGT((int)component1, (int)component2);
+			}else{
+				answer = getRandomInt(9) + 1;
+				component1 = component1 * answer;
+				component2 = component2 * answer;
+			}
+		}else if(level == 3){
+			component1 = getRandomInt(99) + 1;
+			component2 = getRandomInt((int)component1);
+			if(component2 == 0)	component2++;
+			if(getGGT((int)component1, (int)component2) != 0){
+				answer = getGGT((int)component1, (int)component2);
+			}else{
+				answer = getRandomInt(9) + 1;
+				component1 = component1 * answer;
+				component2 = component2 * answer;
+			}
+		}else if(level == 4){
+			component1 = getRandomInt(999) + 1;
+			component2 = getRandomInt((int)component1);
+			if(component2 == 0)	component2++;
+			if(getGGT((int)component1, (int)component2) != 0){
+				answer = getGGT((int)component1, (int)component2);
+			}else{
+				answer = getRandomInt(9) + 1;
+				component1 = component1 * answer;
+				component2 = component2 * answer;
+			}
+		}
+	}
+	
+	@Override
+	public String getQuestion(){
+		return "Ggt von: " + component1 + " / " + component2;
+	}
+	
+	private int getGGT(int a, int b){
+		while(b != 0){
+			if(a > b){
+				a = a - b;
+			}else{
+				b = b - a;
+			}
+		}
+		return a;
+	}
+}

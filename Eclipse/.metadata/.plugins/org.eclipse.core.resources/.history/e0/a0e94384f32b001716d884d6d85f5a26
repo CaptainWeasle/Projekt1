@@ -1,0 +1,18 @@
+package main;
+
+import javax.swing.JFrame;
+
+import window.MainFrame;
+
+public class Controller {
+	
+	public Controller() {
+		System.out.println("Generate frame");
+		
+		Player player = new Player();
+		
+		// Main-Frame
+		MainFrame frame = new MainFrame(player);
+		
+	}
+}

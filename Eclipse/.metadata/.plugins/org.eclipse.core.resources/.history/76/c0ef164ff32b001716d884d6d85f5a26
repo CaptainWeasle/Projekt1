@@ -1,0 +1,19 @@
+package main;
+
+import javax.swing.JFrame;
+
+public class Controller {
+	
+	public Controller() {
+		System.out.println("Generate frame");
+		Player player = new Player();
+		
+		// Main-Frame
+		JFrame frame = new JFrame();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		exercisePanel(frame, player);
+		frame.pack();
+		frame.setTitle("Mathe Trainer");
+		frame.setVisible(true);
+	}
+}
